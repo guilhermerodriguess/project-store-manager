@@ -6,6 +6,7 @@ const productsRouter = Router();
 
 productsRouter.get('/', control.getAllProducts);
 productsRouter.get('/:id', control.getById);
+productsRoutes.put('/:id', productsValidation, control.updateProduct);
 productsRouter.post('/', productsValidation, control.addProducts);
 
 module.exports = {
