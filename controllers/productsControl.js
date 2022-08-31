@@ -41,10 +41,20 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+const deleteProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const data = await service.deleteProduct(id);
+    if (data) return res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getAllProducts,
   getById,
   addProducts,
   updateProduct,
+  deleteProduct,
 }; 
