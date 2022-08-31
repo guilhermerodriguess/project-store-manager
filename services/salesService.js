@@ -26,8 +26,18 @@ const allProductsById = async (id) => {
   throw errorArray[8];
 };
 
+const deleteSales = async (id) => {
+  const data = await model.checkIdFromParams(id);
+  if (data.length === 1) {
+    const result = await model.deleteSales(id);
+    return result;
+  }
+  throw errorArray[8];
+};
+
 module.exports = {
   registerSales,
   allSales,
   allProductsById,
+  deleteSales,
 }; 

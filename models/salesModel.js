@@ -51,10 +51,21 @@ const allProductsById = async (id) => {
   return data;
 };
 
+const deleteSales = async (id) => {
+  const query = 'DELETE FROM StoreManager.sales WHERE id=?;';
+  const query2 = 'DELETE FROM StoreManager.sales_products WHERE sale_id=?;';
+  await Promise.all(
+    await connection.execute(query, [id]),
+    connection.execute(query2, [2]),
+  );
+  return true;
+};
+
 module.exports = {
   registerSales,
   checkId,
   allSales,
   checkIdFromParams,
   allProductsById,
+  deleteSales,
 }; 

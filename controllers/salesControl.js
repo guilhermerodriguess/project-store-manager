@@ -28,8 +28,19 @@ const allProductsById = async (req, res, next) => {
   }
 };
 
+const deleteSales = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const data = await service.deleteSales(id);
+    if (data) return res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerSales,
   allSales,
   allProductsById,
+  deleteSales,
 }; 
