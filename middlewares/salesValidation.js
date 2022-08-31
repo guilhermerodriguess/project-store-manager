@@ -1,13 +1,19 @@
 const errorArray = require('../helpers/errorArray');
 
 const salesValidation = (req, _res, next) => {
-  const teste = req.body;
-  teste.forEach((element) => {
-    if (element.quantity <= 0) next(errorArray[7]);
-    if (!element.quantity) next(errorArray[6]);
-    if (!element.productId) next(errorArray[5]);
-    next();
-  });
+  const product = req.body;
+  const map1 = product.some((e) => e.quantity <= 0);
+  const map2 = product.some((e) => !e.quantity);
+  const map3 = product.some((e) => !e.productId);
+
+  if (map1) {
+    next(errorArray[7]);
+  } else if (map2) {
+    next(errorArray[6]);
+  } else if (map3) {
+    next(errorArray[5]);
+  }
+  next();
 };
 
 module.exports = salesValidation; 

@@ -19,16 +19,14 @@ const registerSales = async (body) => {
   };
 };
 
-const getByProductId = async (body) => {
+const checkId = async () => {
   const query = 'SELECT id FROM StoreManager.products;';
-  const [gettingIds] = await connection.execute(query);
-  const comparar = gettingIds.map((vamos) => vamos.id);
-  const teste = body.map((e) => e.productId);
-  const r3 = teste.filter((e) => !comparar.includes(e));
-  if (r3.length !== 0) return false;
+  const [data] = await connection.execute(query);
+  const sending = data.map((e) => e.id);
+  return sending;
 };
 
 module.exports = {
   registerSales,
-  getByProductId,
+  checkId,
 }; 
