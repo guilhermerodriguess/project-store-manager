@@ -4,7 +4,8 @@ const model = require('../../../models/productsModel');
 const sinon = require('sinon');
 const { expect } = require("chai");
 const errorArray = require('../../../helpers/errorArray');
-const error = require("../../../helpers/errorArray");
+const { connect } = require("superagent");
+const connection = require("../../../db/connection");
 
 // Função getAllProducts:
 describe('Deve retornar', () => {
@@ -143,9 +144,71 @@ describe('Quando é recebido um nome no req.body para adicionar ao banco', () =>
   })
 })
 
-// deve receber um array com todos os produtos
-// se o banco estiver vazio, o array deve estar vazio
-//
-// CONSULTA POR ID:
-// se não houver o id no banco, deve receber um array vazio
-// 
+  // Função updateProduct:
+describe('Quando recebido um id e um name', () => {
+  describe('o id tem que ser validado', () => {
+
+    const dataBase = [[{
+      id: 5,
+      name: 'bola',
+    }]];
+
+    beforeEach(() => {
+      sinon.stub(model, 'getById').resolves(dataBase);
+    });
+    afterEach(() => {
+      model.getById.restore();
+    });
+
+    it('se não tem o id no banco de dados', async () => {
+      const id = 6;
+      const data = await model.getById(id);
+      if (!data) expect(await service.updateProduct(id)).to.throw(errorArray[0]);
+
+    });
+
+    it('retorno da função se tiver o id no banco', async () => {
+      const id = 5;
+      const name = 'cola'
+      const data = await model.getById(id);
+      if (data) {
+        expect(await service.updateProduct({ id, name })).to.deep.equal({ id: 5, name: 'cola' });
+      };
+    });
+
+  });
+});
+
+// Função deleteProduct
+
+describe('Quando recebido um id', () => {
+  describe('o id tem que ser validado', () => {
+
+    const dataBase = [[{
+      id: 5,
+      name: 'bola',
+    }]];
+
+    beforeEach(() => {
+      sinon.stub(model, 'getById').resolves(dataBase)
+    });
+    afterEach(() => {
+      model.getById.restore();
+    });
+
+    it('se não tem o id no banco de dados', async () => {
+      const id = 6;
+      const data = await model.getById(id);
+      if (!data) expect(await service.deleteProduct(id)).to.throw(errorArray[0]);
+    });
+
+    it('retorno da função se tiver o id no banco', async () => {
+      const id = 5;
+      const data = await model.getById(id);
+      if (data) {
+        expect(await service.deleteProduct(id)).to.deep.equal(true);
+      };
+    });
+
+  });
+}); 
