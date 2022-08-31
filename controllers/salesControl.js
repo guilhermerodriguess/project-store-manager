@@ -38,9 +38,25 @@ const deleteSales = async (req, res, next) => {
   }
 };
 
+const updateSales = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const dataUpdate = req.body;
+    const finalResult = {
+      saleId: id,
+      itemsUpdated: dataUpdate,
+    };
+    const data = await service.verifyIdFromProducts({ id, dataUpdate });
+    if (data) return res.status(200).json(finalResult);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerSales,
   allSales,
   allProductsById,
   deleteSales,
+  updateSales,
 }; 

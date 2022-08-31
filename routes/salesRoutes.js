@@ -8,5 +8,6 @@ salesRoutes.post('/', salesValidation, control.registerSales);
 salesRoutes.get('/', control.allSales);
 salesRoutes.get('/:id', control.allProductsById);
 salesRoutes.delete('/:id', control.deleteSales);
+salesRoutes.put('/:id', salesValidation, control.updateSales);
 
 module.exports = salesRoutes; 

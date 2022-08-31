@@ -38,7 +38,6 @@ const allSales = async () => {
 const checkIdFromParams = async (id) => {
   const query = 'SELECT id FROM StoreManager.sales WHERE id=?;';
   const [data] = await connection.execute(query, [id]);
-  console.log(data);
   return data;
 };
 
@@ -61,6 +60,22 @@ const deleteSales = async (id) => {
   return true;
 };
 
+const updateSales = async (info) => {
+  const { id, dataUpdate } = info;
+  const query1 = 'SELECT id FROM StoreManager.products WHERE id=?;';
+
+  const query2 = 'SELECT id FROM StoreManager.sales WHERE id=?;';
+  const [promise2] = await connection.execute(query2, [id]);
+  
+  const query = `UPDATE StoreManager.sales_products 
+  SET quantity=? WHERE sale_id=? AND product_id=?`;
+
+  await Promise.all(dataUpdate.map(async (e) => {
+    const [promise1] = await connection.execute(query1, [e.productId]);
+    await connection.execute(query, [e.quantity, promise2[0].id, promise1[0].id]);
+  }));
+  return true;
+};
 module.exports = {
   registerSales,
   checkId,
@@ -68,4 +83,5 @@ module.exports = {
   checkIdFromParams,
   allProductsById,
   deleteSales,
+  updateSales,
 }; 

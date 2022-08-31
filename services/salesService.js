@@ -35,9 +35,36 @@ const deleteSales = async (id) => {
   throw errorArray[8];
 };
 
+const updateSales = async (data) => {
+  const result = await model.updateSales(data);
+  return result;
+};
+
+const verifyIdFromSales = async (data) => {
+  const { id } = data;
+  const result = await model.checkIdFromParams(id);
+  if (result.length > 0) {
+    const send = await updateSales(data);
+    return send;
+  }
+  throw errorArray[8];
+};
+const verifyIdFromProducts = async (body) => {
+  const { dataUpdate } = body;
+  const data = await model.checkId();
+  const get = dataUpdate.some((e) => !data.includes(e.productId));
+  if (!get) {
+    const result = await verifyIdFromSales(body);
+    return result;
+  }
+  throw errorArray[0];
+};
+
 module.exports = {
   registerSales,
   allSales,
   allProductsById,
   deleteSales,
+  updateSales,
+  verifyIdFromProducts,
 }; 
