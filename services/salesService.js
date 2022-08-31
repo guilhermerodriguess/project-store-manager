@@ -12,6 +12,22 @@ const registerSales = async (body) => {
   }
 };
 
+const allSales = async () => {
+  const data = await model.allSales();
+  return data;
+};
+
+const allProductsById = async (id) => {
+  const data = await model.checkIdFromParams(id);
+  if (data.length === 1) {
+    const result = await model.allProductsById(id);
+    return result;
+  }
+  throw errorArray[8];
+};
+
 module.exports = {
   registerSales,
+  allSales,
+  allProductsById,
 }; 

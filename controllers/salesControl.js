@@ -9,6 +9,27 @@ const registerSales = async (req, res, next) => {
   }
 };
 
+const allSales = async (_req, res, next) => {
+  try {
+    const data = await service.allSales();
+    return res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const allProductsById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const data = await service.allProductsById(id);
+    return res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerSales,
+  allSales,
+  allProductsById,
 }; 
