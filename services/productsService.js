@@ -22,7 +22,6 @@ const addProducts = async (name) => {
   const findName = dataGetByName.some((product) => product.name === name);
   if (findName) throw errorArray[2];
   const data = await model.addProducts(name);
-  console.log(data);
   return data;
 };
 
