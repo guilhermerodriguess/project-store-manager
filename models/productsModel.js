@@ -21,6 +21,7 @@ const addProducts = async (name) => {
 const getByName = async (name) => {
   const query = 'SELECT name FROM StoreManager.products WHERE name=?';
   const [data] = await connection.execute(query, [name]);
+  console.log(data);
   return data;
 };
 
