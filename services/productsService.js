@@ -46,10 +46,20 @@ const deleteProduct = async (id) => {
   throw errorArray[0];
 };
 
+const getBySearch = async (name) => {
+  if (name) {
+    const data = await model.getBySearch(name);
+    return data;
+  }
+  const data = await model.getAllProducts();
+  return data;
+};
+
 module.exports = {
   getAllProducts,
   getById,
   addProducts,
   updateProduct,
   deleteProduct,
+  getBySearch,
 };

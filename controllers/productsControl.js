@@ -51,10 +51,21 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
+const getBySearch = async (req, res, next) => {
+  try {
+    const productSearch = req.query.q;
+    const data = await service.getBySearch(productSearch);
+    return res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllProducts,
   getById,
   addProducts,
   updateProduct,
   deleteProduct,
+  getBySearch,
 }; 
