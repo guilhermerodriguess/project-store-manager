@@ -17,8 +17,6 @@ const registerSales = async (body) => {
     id: gettingValue[0].big,
     itemsSold: body,
   };
-  // const queryReturnId = 'SELECT COUNT(id) FROM StoreManager.sales;';
-  // const promise3 = await connection.execute(queryReturnId);
 };
 
 const getByProductId = async (body) => {
@@ -28,30 +26,7 @@ const getByProductId = async (body) => {
   const teste = body.map((e) => e.productId);
   const r3 = teste.filter((e) => !comparar.includes(e));
   if (r3.length !== 0) return false;
-  // return false;
 };
-
-// body.filter((e) => {
-//   if (!comparar.includes(e.productId)) return 1;
-//   return e;
-// });
-// const r3 = teste.filter((e) => !comparar.includes(e));
-// console.log(teste);
-
-// console.log(r3);
-
-// return r3;
-
-// for (let index = 0; index < teste.length; index += 1) {
-//   if (Number(teste[index]) !== Number(comparar[index])) {
-//     return false;
-//   } return body; 
-// }
-
-// const testando = comparar.join();
-
-// if (teste !== []) return undefined;
-// return body;
 
 module.exports = {
   registerSales,

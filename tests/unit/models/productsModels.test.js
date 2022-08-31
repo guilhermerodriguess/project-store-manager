@@ -129,4 +129,97 @@ describe('Ao receber um nome no body, retorna', () => {
     const data = await model.getByName(name2);
     expect(data[0].name).to.deep.equal(name2);
   })
-}) 
+})
+
+// Função updateProduct: 
+describe('A função updateProduct', () => {
+  describe('ao receber um id e name', () => {
+    const savedData = [[{
+      id: 2,
+      name: 'Bola',
+    }]]
+
+    beforeEach(() => {
+      sinon.stub(connection, 'execute').resolves(savedData)
+    })
+    afterEach(() => {
+      connection.execute.restore();
+    })
+    it('deleta o nome do produto antigo', async () => {
+      const updateData = {
+        id: 2,
+        name: 'Copo'
+      }
+
+      await model.updateProduct(updateData);
+      let data = savedData.filter((e) => e.id === updateData.id)
+      if (data) {
+        data = updateData;
+        expect(savedData).to.not.include(data);
+      }
+    })
+    it('atualizar o nome do produto', async () => {
+      const updateData = {
+        id: 2,
+        name: 'Copo'
+      }
+      await model.updateProduct(updateData);
+      let [teste] = savedData.filter((e) => e.id === updateData.id)
+      if (teste) {
+        teste = updateData;
+        expect(savedData).to.be.an('array').that.includes(updateData);
+      }
+    });
+
+    it('retornar o array todo', async () => {
+      const updateData = {
+        id: 2,
+        name: 'Copo'
+      }
+
+      const data = await model.updateProduct(updateData);
+      let [teste] = savedData.filter((e) => e.id === updateData.id)
+      if (teste) {
+        teste = updateData;
+        expect(data).to.have.a.property('insertId');
+      }
+    })
+  })
+})
+
+// Função deleteProduct:
+describe('A rota delete /product/:id', () => {
+  describe('ao receber um id válido', () => {
+    let savedData = [[{
+      id: 2,
+      name: 'Bola',
+    }]];
+
+    beforeEach(() => {
+      sinon.stub(connection, 'execute').resolves(savedData)
+    })
+    afterEach(() => {
+      connection.execute.restore();
+    })
+    it('o produto com o id correspondente é deletado', async () => {
+      const id = 2;
+      await model.deleteProduct(id);
+      const newArray = savedData.filter((e) => e.id !== id)
+
+      savedData = newArray;
+      expect(savedData).to.not.include([{
+        id: 2,
+        name: 'Bola',
+      }]);
+    });
+
+    it('retorna o array de info', async () => {
+      const id = 2;
+      const [data] = await model.deleteProduct(id);
+      expect(data).to.deep.equal([{
+        id: 2,
+        name: 'Bola',
+      }]);
+    });
+  })
+})
